@@ -61,7 +61,7 @@ export default function ProductAction(props) {
   const { categoryList, isViewMore, categoryId, allProducts } = props;
   const classes = useStyles();
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState(0);
+  const [value, setValue] = useState("");
 
   useEffect(() => {
     setValue(categoryId);
@@ -102,16 +102,22 @@ export default function ProductAction(props) {
                   if (category.category_id !== "185") {
                     return (
                       <MenuItem
-                        value={category.category_id}
+                        key={category?.category_id}
+                        value={category?.category_id}
                         onClick={() => {
                           props.setCategoryId(category?.category_id);
                           handleChange(category?.category_id);
                           props.getProducts(category?.category_id);
+                          if (isViewMore && allProducts.length > 3) {
+                            props.viewLess();
+                          }
                         }}
                       >
                         {category.category_name}
                       </MenuItem>
                     );
+                  } else {
+                    return null;
                   }
                 })}
               </Select>

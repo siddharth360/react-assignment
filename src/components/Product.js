@@ -236,12 +236,16 @@ export default function Product(props) {
                   {data?.name}
                 </Typography>
                 {data?.weight !== 0 && (
-                  <Typography className={classes.productWeight}>
+                  <Typography
+                    className={classes.productWeight}
+                    component={"span"}
+                  >
                     <p>{`(${data?.weight} ${data?.weight_unit})`}</p>
                   </Typography>
                 )}
                 <Typography
                   className={classes.priceContainer}
+                  component={"span"}
                   variant="body2"
                   color="textSecondary"
                 >

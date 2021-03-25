@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
 import Tabs from "@material-ui/core/Tabs";
@@ -97,7 +97,7 @@ function TabPanel(props) {
     >
       {value === index && (
         <Box p={3}>
-          <Typography>{children}</Typography>
+          <Typography component={"span"}>{children}</Typography>
         </Box>
       )}
     </div>
@@ -112,6 +112,7 @@ TabPanel.propTypes = {
 
 export default function Home() {
   const classes = useStyles();
+  const divRef = useRef(null);
   const [value, setValue] = useState(0);
   const [categoryList, setCategoryList] = useState([]);
   const [productsList, setProductsList] = useState([]);
@@ -142,6 +143,13 @@ export default function Home() {
       });
   }, []);
 
+  useEffect(() => {
+    if (divRef && divRef.current) {
+      divRef.current.focus();
+    }
+    //eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [divRef.current]);
+
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -158,7 +166,11 @@ export default function Home() {
         if (response?.status === 200) {
           const firstThree = response?.data?.products.filter(
             (product, index) => {
-              if (index <= 2) return product;
+              if (index <= 2) {
+                return product;
+              } else {
+                return null;
+              }
             }
           );
           setProductsList(firstThree);
@@ -182,11 +194,12 @@ export default function Home() {
   };
 
   return (
-    <div className={classes.root}>
+    <div className={classes.root} id="section2">
       <div className={classes.productsContainer}>
         <Typography className={classes.productsText}>Our Products</Typography>
       </div>
       <Tabs
+        selectionFollowsFocus={categoryId ? true : false}
         className={classes.categories}
         value={value}
         onChange={handleChange}
@@ -200,6 +213,8 @@ export default function Home() {
           if (category.category_id !== "185") {
             return (
               <Tab
+                ref={category?.category_id === categoryId ? divRef : null}
+                key={category?.category_id}
                 className={classes.category}
                 label={
                   <>
@@ -223,14 +238,16 @@ export default function Home() {
                 }
               />
             );
+          } else {
+            return null;
           }
         })}
       </Tabs>
 
       {categoryList?.map((_, index) => (
-        <TabPanel value={value} index={index}>
-          {productsList.map((product) => (
-            <Product data={product} />
+        <TabPanel value={value} index={index} key={index} component={"span"}>
+          {productsList.map((product, index) => (
+            <Product key={index} data={product} />
           ))}
         </TabPanel>
       ))}

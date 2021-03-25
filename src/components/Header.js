@@ -130,7 +130,7 @@ export default function Header() {
         <div className={classes.headerFirst}>
           <MenuIcon className={classes.menuIcon} />
           <a href="/" className={classes.logoLink}>
-            <img className={classes.logo} src={ustraaLogo} />
+            <img className={classes.logo} src={ustraaLogo} alt="ustraa-logo" />
           </a>
           <div className={classes.headerSearchFirst}>
             <div className={classes.headerSearchContainer}>
