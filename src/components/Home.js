@@ -234,6 +234,9 @@ export default function Home() {
                       onClick={() => {
                         setCategoryId(category?.category_id);
                         getProducts(category?.category_id);
+                        if (isViewMore && allProducts.length > 3) {
+                          viewLess();
+                        }
                       }}
                     >
                       {category.category_name}
