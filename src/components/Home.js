@@ -146,6 +146,10 @@ export default function Home() {
   useEffect(() => {
     if (divRef && divRef.current) {
       divRef.current.focus();
+      window.scrollTo({
+        top: divRef.current.offsetTop - 50,
+        behavior: "smooth",
+      });
     }
     //eslint-disable-next-line react-hooks/exhaustive-deps
   }, [divRef.current]);
